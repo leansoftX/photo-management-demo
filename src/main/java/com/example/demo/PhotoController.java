@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +37,22 @@ public class PhotoController {
     public void deletePhoto(@PathVariable String id) {
         photoRepos.remove(id);
     }
+
+    @PostMapping("/upload")
+    public String uploadPhoto(@RequestParam("file") MultipartFile file) {
+        try {
+            String id = UUID.randomUUID().toString(); // 生成一个随机ID
+            Photo photo = new Photo(id, file.getOriginalFilename()); // 创建新的Photo对象
+            photoRepos.put(id, photo); // 将新的Photo对象添加到map中
+
+            return "You successfully uploaded " + file.getOriginalFilename() + "!";
+        } 
+        catch (Exception e) {
+            return "Fail to upload " + file.getOriginalFilename() + "!";
+        }
+
+
+
 
 
 
